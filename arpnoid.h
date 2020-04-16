@@ -6,9 +6,10 @@
 #include <string>
 #include <string.h>
 #include <sys/socket.h>
+#include <sys/ioctl.h>
 #include <net/if_arp.h>
 #include <net/if.h>
-#include <sys/ioctl.h>
+#include <arpa/inet.h>
 #include <getopt.h>
 #include <errno.h>
 #include "util.h"

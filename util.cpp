@@ -60,10 +60,22 @@ bool is_ipv4( const char *ip ) {
     return true;
 }
 
-shared_ptr<uint8_t> ip2b( const char *ip ) {
-    return nullptr;
-}
-
 shared_ptr<uint8_t> hw2b( const char *hw ) {
-    return nullptr;
+    shared_ptr<uint8_t> addr = shared_ptr<uint8_t>(new uint8_t[6]);
+    if ( !addr.get() ) {
+        return nullptr;
+    }
+    uint32_t hw32[6];
+    uint8_t *hw_cp = addr.get();
+    int c = sscanf( hw, "%x:%x:%x:%x:%x:%x", &hw32[0], &hw32[1], &hw32[2], &hw32[3], &hw32[4], &hw32[5] );
+    if ( c == EOF || c == -1 )
+        return nullptr;
+
+    for ( int i = 0 ; i < 6 ; i++ ) {
+        if ( hw32[i] > 0xff || hw32[i] < 0x00 ) {
+            return nullptr;
+        }
+        hw_cp[i] = (uint8_t) hw32[i]; 
+    }
+    return addr;
 }
