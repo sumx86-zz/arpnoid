@@ -14,6 +14,6 @@ string trim( const char *str );
 string file_content( const char *file );
 vector<string> split_str( const string& str, const char delim );
 uint32_t iptol( const char *ip );
-shared_ptr<uint8_t> hw2b( const char *hw );
+bool hw2b( const char *hw, uint8_t *hww );
 
 #endif

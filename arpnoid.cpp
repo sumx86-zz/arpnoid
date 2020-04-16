@@ -35,11 +35,11 @@ bool Arpnoid::is_iface( const char *iface ) {
 }
 
 bool Arpnoid::insert_entry( struct arpreq *req, const char *ip, const char *hw ) {
-    shared_ptr<uint8_t> hww = hw2b( hw );
-    if ( !hww.get() ) {
+    uint8_t hww[6];
+    if ( !hw2b( hw, hww ) ) {
         return false;
     }
-    memcpy( req->arp_ha.sa_data, hww.get(), 0x06 );
+    memcpy( req->arp_ha.sa_data, hww, 0x06 );
     struct sockaddr_in *sin = (struct sockaddr_in *) &req->arp_pa;
     sin->sin_family      = AF_INET;
     sin->sin_addr.s_addr = htonl( iptol( ip ) );

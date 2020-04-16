@@ -79,22 +79,17 @@ uint32_t iptol( const char *ip ) {
 	return _long;
 }
 
-shared_ptr<uint8_t> hw2b( const char *hw ) {
-    shared_ptr<uint8_t> addr = shared_ptr<uint8_t>(new uint8_t[6]);
-    if ( !addr.get() ) {
-        return nullptr;
-    }
+bool hw2b( const char *hw, uint8_t *hww ) {
     uint32_t hw32[6];
-    uint8_t *hw_cp = addr.get();
     int c = sscanf( hw, "%x:%x:%x:%x:%x:%x", &hw32[0], &hw32[1], &hw32[2], &hw32[3], &hw32[4], &hw32[5] );
     if ( c == EOF || c == -1 )
-        return nullptr;
+        return false;
 
     for ( int i = 0 ; i < 6 ; i++ ) {
         if ( hw32[i] > 0xff || hw32[i] < 0x00 ) {
-            return nullptr;
+            return false;
         }
-        hw_cp[i] = (uint8_t) hw32[i]; 
+        hww[i] = (uint8_t) hw32[i];
     }
-    return addr;
+    return true;
 }
