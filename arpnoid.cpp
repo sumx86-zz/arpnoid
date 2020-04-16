@@ -42,7 +42,7 @@ bool Arpnoid::insert_entry( struct arpreq *req, const char *ip, const char *hw )
     memcpy( req->arp_ha.sa_data, hww.get(), 0x06 );
     struct sockaddr_in *sin = (struct sockaddr_in *) &req->arp_pa;
     sin->sin_family      = AF_INET;
-    sin->sin_addr.s_addr = htonl( inet_addr( ip ) );
+    sin->sin_addr.s_addr = htonl( iptol( ip ) );
 
     if ( ioctl( _socket, SIOCSARP, req ) < 0 )
         ERROR( strerror(errno) );

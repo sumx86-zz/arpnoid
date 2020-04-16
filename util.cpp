@@ -60,6 +60,25 @@ bool is_ipv4( const char *ip ) {
     return true;
 }
 
+uint32_t iptol( const char *ip ) {
+    uint32_t _long = 0;
+    char frag[4];
+    uint8_t rtv[4];
+
+    if ( ip ) {
+        for ( int i = 0, j = 0, k = 0 ; i < 4 ; i++ ) {
+            frag[j]     = (isdigit( *ip )) ? *ip++ : '\0' ;
+            frag[j + 1] = (isdigit( *ip )) ? *ip++ : '\0' ;
+            frag[j + 2] = (isdigit( *ip )) ? *ip++ : '\0' ;
+            frag[j + 3] = '\0';
+            ip++;
+            rtv[k++] = atoi( frag );
+        }
+    }
+    _long = (rtv[0] << 24) | (rtv[1] << 16) | (rtv[2] << 8) | (rtv[3] << 0);
+	return _long;
+}
+
 shared_ptr<uint8_t> hw2b( const char *hw ) {
     shared_ptr<uint8_t> addr = shared_ptr<uint8_t>(new uint8_t[6]);
     if ( !addr.get() ) {
