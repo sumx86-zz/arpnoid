@@ -12,7 +12,7 @@ string file_content( const char *file ) {
     string content;
     while ( std::getline( filestream, line ) ) {
         if ( !trim(line.c_str()).empty() ) {
-            content += "\n" + line;
+            content += line + "\n";
         }
     }
     return content;
@@ -30,7 +30,7 @@ string trim( const char *str ) {
     return newstr;
 }
 
-vector<string> split( const string& str, const char delim ) {
+vector<string> split_str( const string& str, const char delim ) {
     if ( str.empty()) {
         return {};
     }
@@ -58,4 +58,12 @@ bool is_ipv4( const char *ip ) {
         }
     }
     return true;
+}
+
+shared_ptr<uint8_t> ip2b( const char *ip ) {
+    return nullptr;
+}
+
+shared_ptr<uint8_t> hw2b( const char *hw ) {
+    return nullptr;
 }

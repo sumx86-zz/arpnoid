@@ -11,12 +11,11 @@
 #include <sys/ioctl.h>
 #include <getopt.h>
 #include <errno.h>
-#include <memory>
 #include "util.h"
 
 #ifndef ERROR
     #define ERROR(buff){\
-        errbuf = string(strerror(errno));\
+        errbuf = string(buff);\
         return false;\
     }
 #endif
@@ -30,6 +29,8 @@ class Arpnoid {
         static std::shared_ptr<Arpnoid> instance( void );
         bool init( const char *iface );
         bool is_iface( const char *iface );
+        bool cache( vector<string> endpoints );
+        bool insert_entry( struct arpreq *req, const char *ip, const char *hw );
 
     public:
         string errbuf;

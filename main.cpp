@@ -34,14 +34,16 @@ int main( int argc, char **argv )
         usage( argv[0] );
     }
 
-    string content = file_content( file );
-    if ( content.empty() ) {
+    vector<string> endpoints = split_str( file_content( file ), '\n' );
+    if ( endpoints.size() <= 0 ) {
         __die( "File is empty!\n" );
     }
     std::shared_ptr<Arpnoid> arpnoid = Arpnoid::instance();
     if ( !arpnoid->init( iface ) ) {
         __die( arpnoid->errbuf );
     }
-    // arpnoid->populate_cache( content );
+    if ( !arpnoid->cache( endpoints ) ) {
+        __die( arpnoid->errbuf );
+    }
     return 0;
 }
