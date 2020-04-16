@@ -6,14 +6,16 @@ Arpnoid::Arpnoid( void ){}
 
 Arpnoid::~Arpnoid(){}
 
-std::shared_ptr<Arpnoid> Arpnoid::instance( void ) {
+std::shared_ptr<Arpnoid> Arpnoid::instance( void )
+{
     if ( !_instance.get() ) {
         _instance = std::shared_ptr<Arpnoid>(new Arpnoid());
     }
     return _instance;
 }
 
-bool Arpnoid::init( const char *iface ) {
+bool Arpnoid::init( const char *iface )
+{
     if ( (_socket = socket(AF_INET, SOCK_STREAM, 0x00)) < 0 ) {
         ERROR( strerror(errno) );
     }
@@ -23,7 +25,8 @@ bool Arpnoid::init( const char *iface ) {
     return true;
 }
 
-bool Arpnoid::is_iface( const char *iface ) {
+bool Arpnoid::is_iface( const char *iface )
+{
     struct ifreq req;
     strcpy( req.ifr_name, iface );
 
@@ -34,7 +37,8 @@ bool Arpnoid::is_iface( const char *iface ) {
     return true;
 }
 
-bool Arpnoid::insert_entry( struct arpreq *req, const char *ip, const char *hw ) {
+bool Arpnoid::insert_entry( struct arpreq *req, const char *ip, const char *hw )
+{
     uint8_t hww[6];
     if ( !hw2b( hw, hww ) ) {
         return false;
@@ -49,7 +53,8 @@ bool Arpnoid::insert_entry( struct arpreq *req, const char *ip, const char *hw )
     return true;
 }
 
-bool Arpnoid::cache( vector<string> endpoints ) {
+bool Arpnoid::cache( vector<string> endpoints )
+{
     struct arpreq req;
     memset( &req, '\x00', sizeof(req) );
     strcpy( req.arp_dev, _iface );
