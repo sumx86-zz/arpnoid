@@ -20,18 +20,36 @@ bool Arpnoid::init( const char *iface ) {
     if ( !is_iface( iface ) ) {
         return false;
     }
+    _iface = iface;
     return true;
 }
 
 bool Arpnoid::is_iface( const char *iface ) {
-    struct ifreq req;
-    strcpy( req.ifr_name, iface );
-
-    if ( ioctl( _socket, SIOCGIFADDR, &req ) < 0 ) {
-        ERROR( strerror(errno) );
+    struct ifreq *req = if_list();
+    if ( !req ) {
+        return false;
     }
-    _iface = iface;
-    return true;
+    register int i = 0;
+    while ( strlen( req[i].ifr_name ) > 0 ) {
+        if ( strcmp( iface, req[i++].ifr_name ) == 0 ) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/* list all interfaces */
+struct ifreq * Arpnoid::if_list( void ) {
+    struct ifconf conf;
+    static struct ifreq req[10];
+
+    conf.ifc_len = sizeof( req );
+    conf.ifc_req = req;
+
+    if ( ioctl( _socket, SIOCGIFCONF, &conf ) < 0 ) {
+        ERROR2( strerror(errno) );
+    }
+    return req;
 }
 
 bool Arpnoid::insert_entry( struct arpreq *req, const char *ip, const char *hw ) {

@@ -21,6 +21,13 @@
     }
 #endif
 
+#ifndef ERROR2
+    #define ERROR2(buff){\
+        errbuf = string(buff);\
+        return nullptr;\
+    }
+#endif
+
 using namespace std;
 
 class Arpnoid {
@@ -32,7 +39,8 @@ class Arpnoid {
         bool is_iface( const char *iface );
         bool cache( vector<string> endpoints );
         bool insert_entry( struct arpreq *req, const char *ip, const char *hw );
-
+        struct ifreq * if_list( void );
+        
     public:
         string errbuf;
 
